@@ -531,19 +531,22 @@ namespace mamba
         if (shell == "zsh" || shell == "bash" || shell == "posix")
         {
             std::string contents = data_micromamba_sh;
-            replace_all(contents, "$MAMBA_EXE", exe.string());
+            // Using /unix/like/paths on Unix shell (even on Windows)
+            replace_all(contents, "$MAMBA_EXE", exe.generic_string());
             return contents;
         }
         else if (shell == "csh")
         {
             std::string contents = data_micromamba_csh;
-            replace_all(contents, "$MAMBA_EXE", exe.string());
+            // Using /unix/like/paths on Unix shell (even on Windows)
+            replace_all(contents, "$MAMBA_EXE", exe.generic_string());
             return contents;
         }
         else if (shell == "xonsh")
         {
             std::string contents = data_mamba_xsh;
-            replace_all(contents, "$MAMBA_EXE", exe.string());
+            // Using /unix/like/paths on Unix shell (even on Windows)
+            replace_all(contents, "$MAMBA_EXE", exe.generic_string());
             return contents;
         }
         else if (shell == "powershell")
@@ -569,7 +572,8 @@ namespace mamba
         else if (shell == "fish")
         {
             std::string contents = data_mamba_fish;
-            replace_all(contents, "$MAMBA_EXE", exe.string());
+            // Using /unix/like/paths on Unix shell (even on Windows)
+            replace_all(contents, "$MAMBA_EXE", exe.generic_string());
             return contents;
         }
         return "";
