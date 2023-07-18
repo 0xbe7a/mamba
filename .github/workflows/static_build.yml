@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -96,6 +97,13 @@ jobs:
           # and the info which packages are installed is in %VCPKG_INSTALLATION_ROOT%\installed\vcpkg
           path: C:\Users\runneradmin\AppData\Local\vcpkg
           key: vcpkg-win-64-appdata
+
+      - name: Fetch nasm from archive.org (tmp)
+        id: fetch-nasm
+        run: |
+          wget https://web.archive.org/https://www.nasm.us/pub/nasm/releasebuilds/2.16.01/win64/nasm-2.16.01-win64.zip
+          mkdir C:\Users\runneradmin\AppData\Local\vcpkg\downloads
+          mv nasm-2.16.01-win64.zip C:\Users\runneradmin\AppData\Local\vcpkg\downloads\.
       - name: Install dependencies with vcpkg
         shell: cmd
         # remove libsolv overlay-ports once https://github.com/microsoft/vcpkg/pull/31275 is released
