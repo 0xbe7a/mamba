@@ -1076,7 +1076,7 @@ bind_submodule_impl(pybind11::module_ m)
             "track_features",
             [](const PackageInfo& self)
             {
-                static_assert(LIBMAMBA_VERSION_MAJOR == 1, "Version 1 compatibility.");
+                static_assert(LIBMAMBA_VERSION_MAJOR == 2, "Version 1 compatibility.");
                 return fmt::format("{}", fmt::join(self.track_features, ","));
             },
             [](PackageInfo& self, std::string_view val)

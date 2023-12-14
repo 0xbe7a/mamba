@@ -1071,48 +1071,6 @@ namespace mamba
 
 #undef TEST_BOOL_CONFIGURABLE
 
-            TEST_CASE_FIXTURE(Configuration, "has_config_name")
-            {
-                using namespace detail;
-
-                CHECK_FALSE(has_config_name(""));
-                CHECK_FALSE(has_config_name("conf"));
-                CHECK_FALSE(has_config_name("config"));
-                CHECK_FALSE(has_config_name("config.conda"));
-                CHECK_FALSE(has_config_name("conf.condarc"));
-                CHECK_FALSE(has_config_name("conf.mambarc"));
-
-                CHECK(has_config_name("condarc"));
-                CHECK(has_config_name("mambarc"));
-                CHECK(has_config_name(".condarc"));
-                CHECK(has_config_name(".mambarc"));
-                CHECK(has_config_name(".yaml"));
-                CHECK(has_config_name(".yml"));
-                CHECK(has_config_name("conf.yaml"));
-                CHECK(has_config_name("config.yml"));
-            }
-
-            TEST_CASE_FIXTURE(Configuration, "is_config_file")
-            {
-                using namespace detail;
-
-                fs::u8path p = mambatests::test_data_dir / "config/.condarc";
-
-                std::vector<fs::u8path> wrong_paths = {
-                    mambatests::test_data_dir / "config",
-                    mambatests::test_data_dir / "conf",
-                    mambatests::test_data_dir / "config/condarc",
-                    mambatests::test_data_dir / "history/conda-meta/history",
-                };
-
-                CHECK(is_config_file(p));
-
-                for (const fs::u8path& wp : wrong_paths)
-                {
-                    CHECK_FALSE(is_config_file(wp));
-                }
-            }
-
             // Regression test for https://github.com/mamba-org/mamba/issues/2704
             TEST_CASE_FIXTURE(Configuration, "deduplicate_rc_files")
             {

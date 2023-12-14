@@ -952,17 +952,9 @@ namespace mamba
 
     namespace detail
     {
-        bool has_config_name(const std::string& file)
-        {
-            const auto filename = fs::u8path(file).filename();
-            return filename == ".condarc" || filename == "condarc" || filename == ".mambarc"
-                   || filename == "mambarc" || util::ends_with(file, ".yml")
-                   || util::ends_with(file, ".yaml");
-        }
-
         bool is_config_file(const fs::u8path& path)
         {
-            return fs::exists(path) && (!fs::is_directory(path)) && has_config_name(path.string());
+            return fs::exists(path) && (!fs::is_directory(path));
         }
 
         void print_node(YAML::Emitter& out, YAML::Node value, YAML::Node source, bool show_source);
@@ -2227,6 +2219,7 @@ namespace mamba
 
         for (const fs::u8path& l : possible_rc_paths)
         {
+            
             if (detail::is_config_file(l))
             {
                 sources.push_back(l);
@@ -2234,17 +2227,9 @@ namespace mamba
             }
             else if (fs::is_directory(l))
             {
-                for (fs::u8path p : fs::directory_iterator(l))
+                if (!l.empty())
                 {
-                    if (detail::is_config_file(p))
-                    {
-                        sources.push_back(p);
-                        LOG_TRACE << "Configuration found at '" << p.string() << "'";
-                    }
-                    else
-                    {
-                        LOG_DEBUG << "Configuration not found at '" << p.string() << "'";
-                    }
+                    LOG_WARNING << "Reading RC Files from directorys is not supported: '" << l.string() << "'";
                 }
             }
             else
